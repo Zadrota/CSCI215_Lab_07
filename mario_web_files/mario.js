@@ -19,7 +19,7 @@ function init() {
 	// TODO: Put Mario on the ground instead of the cloud
 	Mario = {
 		x: 100,
-		y: 280,
+		y: 615,
 		w: 50,
 		h: 80,
 		JumpSound: new Audio('jump.wav'),
@@ -63,23 +63,31 @@ function draw() {
 		ctx.drawImage(bgImage, 0, 0); 
 		renderMario();
 	}
+    var renderL = function () {
+        ctx.drawImage(bgImage, 0, 0);
+        renderMarioL();
+    }
+    var renderR = function () {
+        ctx.drawImage(bgImage, 0, 0);
+        renderMarioR();
+    }
 
 	/*
 	 * TODO: Alter the y coordinates so Mario will jump while on the ground
 	 */
 	function renderMario(){
-		if (Mario.y > 200 && Mario.moving == "up") {
+		if (Mario.y > 535 && Mario.moving == "up") {
 			Mario.Image.src = "mario2.png";
 			ctx.drawImage(Mario.Image, Mario.x, Mario.y, Mario.w, Mario.h);
 			// Change the y value each time 
 			Mario.y -= 5; // move 5 px up
-		}else if(Mario.y <= 200 && Mario.moving == "up"){
+		}else if(Mario.y <= 535 && Mario.moving == "up"){
 			Mario.moving = "down";
-		} else if(Mario.y < 280 && Mario.moving == "down"){
+		} else if(Mario.y < 615 && Mario.moving == "down"){
 			Mario.Image.src = "mario2.png";
 			ctx.drawImage(Mario.Image, Mario.x, Mario.y, Mario.w, Mario.h);
 			Mario.y += 5; // move 5 px back down after a jump
-		}else if(Mario.y == 280 && Mario.moving == "no"){
+		}else if(Mario.y == 615 && Mario.moving == "no"){
 			Mario.moving = "up";
 			Mario.JumpSound.play();
 		}else{
@@ -89,6 +97,38 @@ function draw() {
 			clearInterval(Mario.timer); // kills the timer
 		}	
 	}
+    function renderMarioL(){
+        if (Mario.x > 0 && Mario.moving == "no") {
+            Mario.Image.src = "marioturnsleft.png";
+            Mario.moving = "left";
+            ctx.drawImage(Mario.Image, Mario.x, Mario.y, Mario.w, Mario.h);
+            // Change the y value each time
+        }else if(Mario.moving == "left"){
+            Mario.x -= 5; // move 5 px left
+            Mario.moving = "no";
+            Mario.Image.src = "mario1.png";
+            ctx.drawImage(Mario.Image, Mario.x, Mario.y, Mario.w, Mario.h);
+            clearInterval(Mario.timer); // kills the timer
+		}else{
+            Mario.moving = "no";
+            Mario.Image.src = "mario1.png";
+            ctx.drawImage(Mario.Image, Mario.x, Mario.y, Mario.w, Mario.h);
+            clearInterval(Mario.timer); // kills the timer
+        }
+    }
+    function renderMarioR(){
+        if (Mario.x > 0 && Mario.moving == "no") {
+            Mario.Image.src = "marioturnsright.png";
+            ctx.drawImage(Mario.Image, Mario.x, Mario.y, Mario.w, Mario.h);
+            // Change the y value each time
+            Mario.x += 5; // move 5 px up
+        }else{
+            Mario.moving = "no";
+            Mario.Image.src = "mario1.png";
+            ctx.drawImage(Mario.Image, Mario.x, Mario.y, Mario.w, Mario.h);
+            clearInterval(Mario.timer); // kills the timer
+        }
+    }
 	///////////////////////////////////////////////////////////////////
 
 
@@ -110,9 +150,14 @@ function draw() {
     	if(keycode === 13 && Mario.moving == "no") {  
         	Mario.timer = setInterval(render, Mario.timerInterval); 
     	}
-
-
-
+        else if (keycode == '37' && Mario.moving == "no") {
+            // left arrow
+            Mario.timer = setInterval(renderL, Mario.timerInterval);
+        }
+        else if (keycode == '39' && Mario.moving == "no") {
+            // right arrow
+            Mario.timer = setInterval(renderR, Mario.timerInterval);
+        }
     }
 
     /* TODO:
