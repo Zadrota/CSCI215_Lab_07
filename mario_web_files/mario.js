@@ -50,7 +50,7 @@ function draw() {
 	// loaded, you must do it this way
 	bgImage.onload = function(){
 		ctx.drawImage(bgImage, 0, 0);
-
+		ctx.drawImage(Mario);
     }
 
 	/*
@@ -95,21 +95,22 @@ function draw() {
 			Mario.Image.src = "mario1.png";
 			ctx.drawImage(Mario.Image, Mario.x, Mario.y, Mario.w, Mario.h);
 			clearInterval(Mario.timer); // kills the timer
-		}	
+		}
 	}
     function renderMarioL(){
         if (Mario.x > 0 && Mario.moving == "no") {
             Mario.Image.src = "marioturnsleft.png";
+            // Change the x value each time
+            Mario.x -= 5; // move 5 px left
             Mario.moving = "left";
             ctx.drawImage(Mario.Image, Mario.x, Mario.y, Mario.w, Mario.h);
-            // Change the y value each time
-        }else if(Mario.moving == "left"){
-            Mario.x -= 5; // move 5 px left
+        }else if (Mario.x < 0){
+        	Mario.x = 0;
             Mario.moving = "no";
             Mario.Image.src = "mario1.png";
             ctx.drawImage(Mario.Image, Mario.x, Mario.y, Mario.w, Mario.h);
             clearInterval(Mario.timer); // kills the timer
-		}else{
+        }else if (Mario.moving == "left"){
             Mario.moving = "no";
             Mario.Image.src = "mario1.png";
             ctx.drawImage(Mario.Image, Mario.x, Mario.y, Mario.w, Mario.h);
@@ -119,10 +120,11 @@ function draw() {
     function renderMarioR(){
         if (Mario.x > 0 && Mario.moving == "no") {
             Mario.Image.src = "marioturnsright.png";
+            // Change the x value each time
+            Mario.x += 5; // move 5 px right
+            Mario.moving = "right";
             ctx.drawImage(Mario.Image, Mario.x, Mario.y, Mario.w, Mario.h);
-            // Change the y value each time
-            Mario.x += 5; // move 5 px up
-        }else{
+        }else if (Mario.moving == "right"){
             Mario.moving = "no";
             Mario.Image.src = "mario1.png";
             ctx.drawImage(Mario.Image, Mario.x, Mario.y, Mario.w, Mario.h);
